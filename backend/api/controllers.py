@@ -40,6 +40,10 @@ import json, datetime, pytz
 from django.core import serializers
 import requests
 
+from api.models import Dog
+from api.models import Breed
+
+from api.serializers import BreedSerializer
 
 def home(request):
    """
@@ -128,13 +132,19 @@ class Events(APIView):
 class ActivateIFTTT(APIView):
     permission_classes = (AllowAny,)
     parser_classes = (parsers.JSONParser,parsers.FormParser)
-    renderer_classes = (renderers.JSONRenderer, )
+
+class BreedList(APIView):
+    def get(self, request, format=None):
+        breeds = Breed.objects.all()
+        serializer = BreedSerializer(breeds, many=True)
+        return Response(serializer.data)
 
 class DogList(APIView):
     def get(self, request, format=None):
-        snippets = Snippet.objects.all()
-        serializer = SnippetSerializer(snippets, many=True)
-        return Response(serializer.data)
+        dogs = Dog.objects.all()
+        json_data = serializers.serialize('json', dogs)
+        content = {'dogs': json_data}
+        return HttpResponse(json_data, content_type='json')
 
     def post(self, request, format=None):
         serializer = SnippetSerializer(data=request.data)

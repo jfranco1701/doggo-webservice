@@ -30,20 +30,22 @@ class ApiKey(models.Model):
 class ApiKeyAdmin(admin.ModelAdmin):
     list_display = ('owner','key')
 
+BREED_SIZES = (
+    ('Tiny', 'Tiny'),
+    ('Small', 'Small'),
+    ('Medium', 'Medium'),
+    ('Large', 'Large'),
+)
+
+RATING_VALUES = (
+    (1, 1),
+    (2, 2),
+    (3, 3),
+    (4, 4),
+    (5, 5),
+)
+
 class Breed(models.Model):
-    BREED_SIZES = (
-        ('Tiny', 'Tiny'),
-        ('Small', 'Small'),
-        ('Medium', 'Medium'),
-        ('Large', 'Large'),
-    )
-    RATING_VALUES = (
-        (1, 1),
-        (2, 2),
-        (3, 3),
-        (4, 4),
-        (5, 5),
-    )
     name = models.CharField(max_length=100, blank=False)
     size = models.CharField(max_length=6, choices=BREED_SIZES)
     friendliness = models.IntegerField(choices=RATING_VALUES)
