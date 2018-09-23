@@ -22,3 +22,27 @@ class BreedSerializer(serializers.Serializer):
         instance.exerciseneeds = validated_data.get('exerciseneeds', instance.exerciseneeds)
         instance.save()
         return instance
+
+class DogSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    name = serializers.CharField(required=True, allow_blank=False, max_length=100)
+    age = serializers.IntegerField(required=False)
+    breed = serializers.CharField(required=True, allow_blank=False, max_length=100)
+    gender = serializers.CharField(required=False, max_length=50)
+    color = serializers.CharField(required=False, max_length=50)
+    favoritetoy = serializers.CharField(required=False, max_length=100)
+    favoritefood = serializers.CharField(required=False, max_length=100)
+
+    def create(self, validated_data):
+        return Dog.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.age = validated_data.get('age', instance.size)
+        instance.breed = validated_data.get('breed', instance.breed)
+        instance.gender = validated_data.get('gender', instance.gender)
+        instance.color = validated_data.get('color', instance.color)
+        instance.favoritetoy = validated_data.get('favoritetoy', instance.favoritetoy)
+        instance.favoritefood = validated_data.get('favoritefood', instance.favoritefood)
+        instance.save()
+        return instance
