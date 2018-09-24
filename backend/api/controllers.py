@@ -44,6 +44,7 @@ from api.models import Dog
 from api.models import Breed
 
 from api.serializers import BreedSerializer
+from api.serializers import DogSerializer
 
 def home(request):
    """
@@ -139,15 +140,24 @@ class BreedList(APIView):
         serializer = BreedSerializer(breeds, many=True)
         return Response(serializer.data)
 
+    def post(self, request, format=None):
+        print 'REQUEST DATA'
+        print str(request.data)
+        
+        serializer = BreedSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class DogList(APIView):
     def get(self, request, format=None):
         dogs = Dog.objects.all()
-        json_data = serializers.serialize('json', dogs)
-        content = {'dogs': json_data}
-        return HttpResponse(json_data, content_type='json')
+        serializer = DogSerializer(dogs, many=True)
+        return Response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = SnippetSerializer(data=request.data)
+        serializer = DogSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
