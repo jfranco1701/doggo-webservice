@@ -27,7 +27,7 @@ class DogSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(required=True, allow_blank=False, max_length=100)
     age = serializers.IntegerField(required=False)
-    breed = serializers.CharField(required=True, allow_blank=False, max_length=100)
+    breed = serializers.PrimaryKeyRelatedField(read_only=False, queryset=Breed.objects.all())
     gender = serializers.CharField(required=False, max_length=50)
     color = serializers.CharField(required=False, max_length=50)
     favoritetoy = serializers.CharField(required=False, max_length=100)
