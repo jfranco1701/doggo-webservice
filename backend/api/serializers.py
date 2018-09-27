@@ -38,7 +38,7 @@ class DogSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get('name', instance.name)
-        instance.age = validated_data.get('age', instance.size)
+        instance.age = validated_data.get('age', instance.age)
         instance.breed = validated_data.get('breed', instance.breed)
         instance.gender = validated_data.get('gender', instance.gender)
         instance.color = validated_data.get('color', instance.color)
